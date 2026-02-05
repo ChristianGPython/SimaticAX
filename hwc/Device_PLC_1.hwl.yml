@@ -1,0 +1,9 @@
+## This is a hardware configuration file for a device using a predefined PLC config on Slot 1.
+## The referenced template 'MyPlc_Template' although should be created beforehand using the appropriate script with order-number and version.
+Devices:
+    - Name: 'Device_1'
+      Modules:
+        - Apply: 'MyPlc_Template'
+          Arguments:
+            NAME: 'PLC_1'
+            IP_ADDRESS_X1: '192.168.0.1/24' # CIDR notation 192.168.0.1/24 → IP 192.168.0.1 with subnet mask 255.255.255.0
