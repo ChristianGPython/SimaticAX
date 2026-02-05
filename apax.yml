@@ -14,7 +14,7 @@ catalogs:
   "@ax/simatic-ax": ^2510.0.0
 # Dependencies
 devDependencies:
-  "@ax/sdk": ^2510.0.0
+  "@ax/sdk": 2510.5.0
 
 # Project variables
 variables:
@@ -38,7 +38,7 @@ variables:
   # Another alternative is to create the variables as environment variables in your local host system. You can then remove the definition from this document and still use the prepared scripts.
   # Please use a password that is case sensitive (1 big and 1 small letter), a special character and a number.
   # DISCLAIMER: Storing and publishing passwords in readable form is not recommended
-  MASTER_PW: ""
+  MASTER_PW: "Ch57rjjs50!"
 
   # Defining OPC-UA port for the certficate.
   OPC_UA_PORT: "4840"
@@ -52,7 +52,7 @@ variables:
 
   # The password (or passphrase) to access containerWithPublicAndPrivateKeys_x509.p12 used when importing the certificate
   # DISCLAIMER: Storing and publishing passphrase in readable form is not recommended
-  CERT_PASSPHRASE: ""
+  CERT_PASSPHRASE: "Ch57rjjs50!"
 
   # The name of the PLC as specified in the PLC configuration
   # The name should be specified before creating the PLC's security file, as the file are assigned using the PLC name.
@@ -67,48 +67,34 @@ variables:
 
   # Please also set the password in the file '/.vscode/launch.json' for the debugger.
   # DISCLAIMER: Storing and publishing passwords in readable form is not recommended.
-  USER_PASSWORD: ""
+  USER_PASSWORD: "Ch57rjs50!"
 
 # Apax scripts
 scripts:
   ########## Please run after filling the variables: 'PLC_NAME', 'PLC_ORDERNUMBER', 'PLC_VERSION' ##########
   # Generates PLC template file from vars 'PLC_ORDERNUMBER' and 'PLC_VERSION'.
   generate_PLC_template:
-    - apax hwc generate-template-file --order-number "$PLC_ORDERNUMBER"
-      --version "$PLC_VERSION" --output "hwc/templates/MyPlc_Template.hwl.yml"
-      --template-name "MyPlc_Template"
+    - apax hwc generate-template-file --order-number "$PLC_ORDERNUMBER" --version "$PLC_VERSION" --output "hwc/templates/MyPlc_Template.hwl.yml" --template-name "MyPlc_Template"
   # We provide a Bash function that simplifies certificate creation using OpenSSL and automatically moves the certificate to the designated folder.
   # In order to call the script, the access level must be authorized at the beginning.
   # You need to set the variable CERT_PASSPHRASE before executing the script
   create_certificate:
     - chmod +x certificate/createCertificateViaOpenSSL.sh
-    - certificate/createCertificateViaOpenSSL.sh --ip $IP_ADDRESS --uri
-      opc.tcp://$IP_ADDRESS:$OPC_UA_PORT --pkcs12-password $CERT_PASSPHRASE
-      --dns $DNS
-    - echo "Make sure that the CERT_PASSPHRASE variable retains the value that
-      was last used to generate the certificate files when you import
-      certificates later."
+    - certificate/createCertificateViaOpenSSL.sh --ip $IP_ADDRESS --uri opc.tcp://$IP_ADDRESS:$OPC_UA_PORT --pkcs12-password $CERT_PASSPHRASE --dns $DNS
+    - echo "Make sure that the CERT_PASSPHRASE variable retains the value that was last used to generate the certificate files when you import certificates later."
   # Creates a container-file for the PLC security configuration.
-  hwc_setup_secure_communication: hwc setup-secure-communication --input hwc
-    --module-name $PLC_NAME --master-password $MASTER_PW
+  hwc_setup_secure_communication: hwc setup-secure-communication --input hwc --module-name $PLC_NAME --master-password $MASTER_PW
   # Imports the certificate for secure communication (TLS: Transport Layer Security) into this project so that it can be loaded onto the PLC. If applicable, repeat the process for other purposes such as the WebServer or OPC UA Server.
-  hwc_import_certificate: hwc import-certificate --input hwc --module-name
-    $PLC_NAME --certificate $TLS_IMPORT_CERTFILE --passphrase $CERT_PASSPHRASE
-    --purpose TLS
+  hwc_import_certificate: hwc import-certificate --input hwc --module-name $PLC_NAME --certificate $TLS_IMPORT_CERTFILE --passphrase $CERT_PASSPHRASE --purpose TLS
   # Adds a user for the PLC.
-  hwc_add_user: hwc manage-users --input hwc --module-name $PLC_NAME set-password
-    --username $USER_NAME --password $USER_PASSWORD
+  hwc_add_user: hwc manage-users --input hwc --module-name $PLC_NAME set-password --username $USER_NAME --password $USER_PASSWORD
   ##################################################################################
   # Compiles the hardware description (input: sources) to generate compiled HW artifacts (output: binaries), IO- and HwIdent mapping tables (SystemConstants).
   hw_compile: hwc compile --input hwc --output $HW_BIN_FOLDER
   # Loads the target-specific compiled hardware artifacts onto the PLC.
-  hw_load: hwld load --input $HW_BIN_FOLDER/$PLC_NAME --target $IP_ADDRESS
-    --accept-security-disclaimer --certificate $TLS_CONNECT_CERTFILE
-    --master-password $MASTER_PW --username $USER_NAME --password $USER_PASSWORD
+  hw_load: hwld load --input $HW_BIN_FOLDER/$PLC_NAME --target $IP_ADDRESS --accept-security-disclaimer --certificate $TLS_CONNECT_CERTFILE --master-password $MASTER_PW --username $USER_NAME --password $USER_PASSWORD
   # Loads the target-specific compiled software artifacts onto the PLC.
-  load: sld load --input $SW_BIN_FOLDER --target $IP_ADDRESS --restart
-    --accept-security-disclaimer --log debug -C $TLS_CONNECT_CERTFILE --username
-    $USER_NAME --password $USER_PASSWORD
+  load: sld load --input $SW_BIN_FOLDER --target $IP_ADDRESS --restart --accept-security-disclaimer --log debug -C $TLS_CONNECT_CERTFILE --username $USER_NAME --password $USER_PASSWORD
   # Builds and download the SW application to the target PLC.
   dlplc:
     - apax build
