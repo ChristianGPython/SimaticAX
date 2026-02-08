@@ -13,7 +13,7 @@
             "ip": "192.168.0.1",
             "certificate": "${workspaceFolder}/certificate/reference_x509.crt",
             "username": "User1",
-            "password": ""
+            "password": "Ch57rjjs50!"
         }
     ]
 }

@@ -4,5 +4,7 @@ CONFIGURATION MyConfiguration
     PROGRAM P1 WITH Main: MainProgram;
         
     VAR_GLOBAL
+        startmotor: BOOL;
+        stopmotor: BOOL;
     END_VAR
 END_CONFIGURATION

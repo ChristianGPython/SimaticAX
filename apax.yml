@@ -39,7 +39,7 @@ variables:
   # Another alternative is to create the variables as environment variables in your local host system. You can then remove the definition from this document and still use the prepared scripts.
   # Please use a password that is case sensitive (1 big and 1 small letter), a special character and a number.
   # DISCLAIMER: Storing and publishing passwords in readable form is not recommended
-  MASTER_PW: ${MASTER_PW}
+  MASTER_PW: "Ch57rjjs50!"
 
   # Defining OPC-UA port for the certficate.
   OPC_UA_PORT: "4840"
@@ -94,6 +94,10 @@ scripts:
   hw_compile: hwc compile --input hwc --output $HW_BIN_FOLDER
   # Loads the target-specific compiled hardware artifacts onto the PLC.
   hw_load: hwld load --input $HW_BIN_FOLDER/$PLC_NAME --target $IP_ADDRESS --accept-security-disclaimer --certificate $TLS_CONNECT_CERTFILE --master-password $MASTER_PW --username $USER_NAME --password $USER_PASSWORD
+  
+  hw_load2: hwld load --input $HW_BIN_FOLDER/$PLC_NAME --target $IP_ADDRESS --accept-security-disclaimer --certificate $TLS_CONNECT_CERTFILE --master-password $MASTER_PW --username $USER_NAME --password $USER_PASSWORD
+
+  
   # Loads the target-specific compiled software artifacts onto the PLC.
   load: sld load --input $SW_BIN_FOLDER --target $IP_ADDRESS --restart --accept-security-disclaimer --log debug -C $TLS_CONNECT_CERTFILE --username $USER_NAME --password $USER_PASSWORD
   # Builds and download the SW application to the target PLC.
