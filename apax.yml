@@ -14,7 +14,8 @@ catalogs:
   "@ax/simatic-ax": ^2510.0.0
 # Dependencies
 devDependencies:
-  "@ax/sdk": 2510.5.0
+  "@ax/xlad-transpile-cli": ^0.17.0
+  "@ax/st-lang-contrib-xlad": ^0.17.0
 
 # Project variables
 variables:
@@ -38,7 +39,7 @@ variables:
   # Another alternative is to create the variables as environment variables in your local host system. You can then remove the definition from this document and still use the prepared scripts.
   # Please use a password that is case sensitive (1 big and 1 small letter), a special character and a number.
   # DISCLAIMER: Storing and publishing passwords in readable form is not recommended
-  MASTER_PW: "Ch57rjjs50!"
+  MASTER_PW: ${MASTER_PW}
 
   # Defining OPC-UA port for the certficate.
   OPC_UA_PORT: "4840"
@@ -104,3 +105,6 @@ scripts:
     - apax hw_compile
     - apax hw_load
     - apax dlplc
+dependencies:
+  "@ax/sdk": ^2510.5.0
+  "@ax/system": ^10.2.7
