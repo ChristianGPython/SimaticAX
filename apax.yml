@@ -58,7 +58,6 @@ variables:
   # The name of the PLC as specified in the PLC configuration
   # The name should be specified before creating the PLC's security file, as the file are assigned using the PLC name.
   PLC_NAME: "PLC_1"
-
   # Ordernumber and version of the PLC for generating the template file.
   PLC_ORDERNUMBER: "6ES7 516-3AP03-0AB0"
   PLC_VERSION: "V4.0"
@@ -95,7 +94,7 @@ scripts:
   # Loads the target-specific compiled hardware artifacts onto the PLC.
   hw_load: hwld load --input $HW_BIN_FOLDER/$PLC_NAME --target $IP_ADDRESS --accept-security-disclaimer --certificate $TLS_CONNECT_CERTFILE --master-password $MASTER_PW --username $USER_NAME --password $USER_PASSWORD
   
-  hw_load2: hwld load --input $HW_BIN_FOLDER/$PLC_NAME --target $IP_ADDRESS --accept-security-disclaimer --certificate $TLS_CONNECT_CERTFILE --master-password $MASTER_PW --username $USER_NAME --password $USER_PASSWORD
+  hw_load2: hwld load --input $HW_BIN_FOLDER/$PLC_NAME --target $IP_ADDRESS --accept-security-disclaimer --certificate $TLS_CONNECT_CERTFILE --master-password $MASTER_PW
 
   
   # Loads the target-specific compiled software artifacts onto the PLC.
